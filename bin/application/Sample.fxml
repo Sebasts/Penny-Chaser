@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+	
+<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
+	<TextField fx:id="textbox" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+	<Button fx:id="hiButton" text="Hello" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+	<Button fx:id="byeButton" text="Bye" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+</GridPane>
