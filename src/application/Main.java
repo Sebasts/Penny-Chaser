@@ -1,8 +1,11 @@
 package application;
 	
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -27,14 +30,18 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
+		SampleController samp = new SampleController();
+		System.out.print(samp.getPrice("amrs"));
 	}
 }
-
+//Stock class that will hold a List of StockSymbols as well as passing data to the ListView
 class Stocks{
     private List<StockSymbols> stockList;
     
-    public Stocks(List<StockSymbols> stockList) {
-	this.stockList = stockList;
+    public Stocks() {
+	ListView<String> lists = new ListView<>();
+	ObservableList<String> items = FXCollections.observableArrayList();
+	lists.setItems(items);
     }
 
 
