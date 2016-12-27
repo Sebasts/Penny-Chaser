@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+import java.util.List;
+
 public class SampleController {
     @FXML
     private TextField textBox;
@@ -12,6 +14,10 @@ public class SampleController {
     private Button hiButton;
     @FXML
     private Button byeButton;
+    
+    private List<StockSymbols> stock;
+    
+    
     
     
     public void onButtonClick(ActionEvent e){

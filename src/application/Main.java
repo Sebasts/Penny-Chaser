@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,8 +33,15 @@ public class Main extends Application {
 class Stocks{
     private List<StockSymbols> stockList;
     
-    public void newSymbol(){
-	
+    public Stocks(List<StockSymbols> stockList) {
+	this.stockList = stockList;
+    }
+
+
+    public List<StockSymbols> newSymbol(String symbol){
+	this.stockList = new ArrayList<StockSymbols>();
+	this.stockList.add(new StockSymbols(symbol));
+	return this.stockList;
     }
     
     
