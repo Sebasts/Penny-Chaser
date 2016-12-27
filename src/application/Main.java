@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 
 public class Main extends Application {
 	@Override
@@ -25,4 +27,14 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+}
+
+class Stocks{
+    private List<StockSymbols> stockList;
+    
+    public void newSymbol(){
+	
+    }
+    
+    
 }
