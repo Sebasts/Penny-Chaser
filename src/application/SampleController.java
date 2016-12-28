@@ -22,13 +22,19 @@ public class SampleController {
     @FXML
     private TextField textBox;
     @FXML
-    private ListView<String> lists = new ListView<>();
+    private ObservableList<String> items = FXCollections.observableArrayList();
     @FXML
-    ObservableList<String> items = FXCollections.observableArrayList();
+    private ListView<String> lists = new ListView<>(items);
+    
+    private List<String> looper;
+    private List<String> loopier = new ArrayList<>();
     
     
     public String getPrice(String sym){
 	try {
+	    if(!loopier.contains(sym)){
+		loopier.add(sym);
+	    }
 	    Document doc = Jsoup.connect("http://finance.yahoo.com/webservice/v1/symbols/" + sym + "/quote").userAgent("Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) AppleWebKit/<WebKit Rev> (KHTML, like Gecko) Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>").get();
 	    StringBuilder sb = new StringBuilder(doc.toString());
 	    List<String> format = new ArrayList<>();
@@ -42,25 +48,58 @@ public class SampleController {
 	}
 	return null;
     }
-//    @FXML
-//    public void initialize(){
-//	addSymbol.setDisable(true);
-//	ListView<String> lists = new ListView<>();
-//	ObservableList<String> items = FXCollections.observableArrayList();
-//	lists.setItems(items);
-//    }
+    @FXML
+    public void initialize(){
+	this.addSymbol.setDisable(true);
+	this.lists.setItems(items);
+	StockLoop loopy = new StockLoop();
+	loopy.run();
+	
+    }
+    
+    
+    
     
     @FXML
-    public void onButtonClick(ActionEvent e){
-	items.add(getPrice(textBox.getText()));
+    public void onButtonClick(){
+	this.items.add(getPrice(textBox.getText()));
 	textBox.clear();
-	lists.setItems(this.items);
+	lists.setItems(items);
     }
     @FXML
-    public void onButtonRelease(ActionEvent e){
+    public void handleKeyReleased(){
 	String text = textBox.getText();
-	addSymbol.setDisable(text.isEmpty() || text.trim().isEmpty());
+	boolean disableButtons = text.isEmpty() || text.trim().isEmpty();
+	addSymbol.setDisable(disableButtons);	
+    }
+    @FXML
+    public void onEnter(ActionEvent e){
+	onButtonClick();
+    }
+}
+class StockLoop extends SampleController implements Runnable{
+    List<String> looper;
+    List<String> loopier;
+    ListView<String> lists;
+    ObservableList<String> items;
+    
+    public void  run(){
+	try{ while(true){
+	    Thread.sleep(1000);
+	    items.clear();
+	    looper.clear();
+	    lists.setItems(items);
+	    for(String s: loopier){
+		if(loopier.contains(s)){
+		    continue;
+		}
+		items.add(getPrice(s));
+		
+	    }
+	}
+	} catch(Exception e){
+	    System.err.print(e);
+	}
 	
     }
 }
-	
