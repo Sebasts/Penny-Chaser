@@ -31,12 +31,14 @@ public class SampleController {
     private List<String> looper = new ArrayList<>();;
     private List<String> loopier = new ArrayList<>();
     private HashMap<String, String> sMap = new HashMap<>();
-
+    private HashMap<String, Integer> sMap2 = new HashMap<>();
     //This method should take the symbol entered by the user and return
     //stock price from yahoo financials. Contains the code to push the data
     //to the list.
     public String getPrice(String sym){
 	try {
+	    
+	    String holder = "";
 	    if(loopier.contains(sym)){
 	    }
 	    else{
@@ -53,9 +55,13 @@ public class SampleController {
 		sMap.put(sym.toUpperCase().replace("\n", "") +": ", elements.replace("\n", ""));
 	    }
 	    else{
+		holder = sMap.get(sym);
 		sMap.replace(sym.toUpperCase().replace("\n", ""), elements.replace("\n", ""));
 	    }
-	    sMap.put(sym.toUpperCase().replace("\n", "") +": " , element2);
+	    sMap2.put(sym.toUpperCase().replace("\n", "") +": " , Integer.parseInt(element2));
+	    if(Integer.parseInt(element2) == Integer.parseInt(holder)){
+		
+	    }
 	    String finalPrice = sym.toUpperCase().replace("\n", "") + elements.replace("\n", "");
 	    System.out.print(sMap.keySet() + elements);
 	    return finalPrice;
@@ -65,7 +71,9 @@ public class SampleController {
 	return null;
     }
     @FXML //This method runs automatically once the app launches
-    //starts the loop to start the list refresh
+    //starts the loop to start the list refreshes
+    //Also creates a thread that runs the code to update the stock
+    //prices every 5 seconds
     public void initialize() throws InterruptedException{
 	addSymbol.setDisable(true);
 	lists.setItems(items);
@@ -78,7 +86,8 @@ public class SampleController {
 	//StockLoop loopy = new StockLoop(looper, loopier, lists, items);
 	
     }
-    
+    //This should allow for stock prices to be updated in the ListView
+    //every 5 seconds.
     public void refresher(){	    			
 		    while(true){
 			Platform.runLater(() ->{
