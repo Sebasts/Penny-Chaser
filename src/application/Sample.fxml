@@ -9,13 +9,16 @@
 <?import javafx.scene.layout.GridPane?>
 
 <GridPane alignment="CENTER" gridLinesVisible="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.SampleController">
-  <ListView fx:id="lists" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-  <TextField fx:id="textBox" style="-fx-background-color: grey;" GridPane.columnIndex="0" GridPane.rowIndex="1" 
-  			 onAction ="#onEnter" onKeyReleased="#handleKeyReleased"/>
+  <TextField fx:id="textBox" onAction="#onEnter" onKeyReleased="#handleKeyReleased" style="-fx-background-color: grey;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
   <Button fx:id="addSymbol" onAction="#onButtonClick" text="Add Symbol" GridPane.columnIndex="1" GridPane.rowIndex="1" />
   <!--<Button fx:id="byeButton" text="Bye" GridPane.rowIndex="1" GridPane.columnIndex="0"/>-->
   <columnConstraints>
-    <ColumnConstraints maxWidth="286.0" prefWidth="243.0" />
-    <ColumnConstraints maxWidth="104.0" prefWidth="90.0" />
+    <ColumnConstraints maxWidth="286.0" prefWidth="167.0" />
+    <ColumnConstraints maxWidth="166.0" prefWidth="166.0" />
   </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+  <ListView id="listsColor" fx:id="lists" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+  <ListView id="lists" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 </GridPane>
