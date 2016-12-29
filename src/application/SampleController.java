@@ -84,7 +84,7 @@ public class SampleController {
 //
 //		}
 		String finalPrice = sym.toUpperCase().replace("\n", "") + element2;
-		System.out.print(sMap.keySet() + elements);
+		System.out.print(sMap.keySet() + elements +"\n"+loopier.toString()+upOrDown.toString());
 		return finalPrice;
 	    } catch (IOException e) {
 		e.printStackTrace();
@@ -128,12 +128,10 @@ public class SampleController {
 		    //if(this.loopier.contains(s)){
 		    //continue;
 		    //}
-		    Platform.runLater(() ->{
+		  
 			this.items.add(getPrice(s));
-		    });
-
-		}
-		Platform.runLater(() ->{
+			
+		    }
 		    this.lists.setItems(items);
 		    lists.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 		            @Override
@@ -144,38 +142,38 @@ public class SampleController {
 		                        super.updateItem(itemss, b);    //To change body of overridden methods use File | Settings | File Templates.
 		                        
 		                        if (items.contains(itemss)) {
-		                            if(upOrDown.get(items.indexOf(itemss)).equals("neither")){		                        	               
-		                          setTextFill(Color.GREY);
-		                          setText(itemss);
-		                          
-		                            }
-		                            else if(upOrDown.get(items.indexOf(itemss)).equals("up")){
+//		                            
+		                             if(upOrDown.get(items.indexOf(itemss)).equals("up")){
+		                        	Platform.runLater(() ->{
 		                        	setTextFill(Color.GREEN);
 			                          setText(itemss);
+		                        	});
 		                            }
 		                            else if(upOrDown.get(items.indexOf(itemss)).equals("down")){
+		                        	Platform.runLater(() ->{
 		                        	setTextFill(Color.RED);
 			                          setText(itemss);
+		                        	});
 		                            }
-		                         //   setGraphic(null);
+//		                            else if(upOrDown.get(items.indexOf(itemss)).equals("neither")){	                        	
+//			                        	Platform.runLater(() ->{
+//			                        setTextFill(Color.GREY);
+//			                          setText(itemss);
+//			                        	});
+//			                            }
+		                            setGraphic(null);
 		                        }
-//		                        else if (itemss.contains("up")){
-//		                            
-//		                       //             setGraphic(your graphics);
-//		                        //    setText(your text);
-//		                        }
-//		                        else if (itemss.contains("down")){
-//		                            setStyle("-fx-text-fill: red;");
-//		                        //    setGraphic(your graphics);
-//		                       //     setText(your text);
-//		                        }
+//		                        
 		                    }
 		                };
 		            }
 		            
 		        });
+		
+		
+		
 		    
-		});
+		
 		try {
 		    Thread.sleep(5000);
 		} catch (InterruptedException e) {
