@@ -33,9 +33,11 @@ public class SampleController {
     @FXML
     ListView<String> listsColor;
 
-    private List<String> upOrDown = new ArrayList<>();;
+    private double holder1;
+    private double holder2;
+    private List<String> upOrDown = new ArrayList<>();
     private List<String> loopier = new ArrayList<>();
-    private HashMap<String, String> sMap = new HashMap<>();
+    private HashMap<String, Double> sMap = new HashMap<>();
     private HashMap<String, Double> sMap2 = new HashMap<>();
 
     //This method should take the symbol entered by the user and return
@@ -44,8 +46,8 @@ public class SampleController {
     public String getPrice(String sym){
 	try {
 
-	    String holder = null;
-	    double holder2;
+//	    String holder = null;
+//	    double holder2=0;
 	    if(loopier.contains(sym)){
 	    }
 	    else{
@@ -56,154 +58,182 @@ public class SampleController {
 	    String elements = element.toString().replaceAll("<field name=\"price\">", "");
 	    elements = elements.replaceAll("</field>", "");
 	    String element2 = elements.replace("\n", "");
-	    if(!sMap.containsKey(sym.toUpperCase().replace("\n", ""))){
-		sMap.put(sym.toUpperCase().replace("\n", "") +": ", elements.replace("\n", ""));
-	    }
-	    else{
-		holder = sMap.get(sym);
-		holder2 = Double.parseDouble(holder);
-		for(int i=0; i < items.size(); i++){
-		    if(loopier.contains(sym)){
-			if(holder2 < Double.parseDouble(element2)){
-			    upOrDown.add(loopier.indexOf(sym), "down");
-			}
-			else if(holder2 > Double.parseDouble(element2)){
-			    upOrDown.add(loopier.indexOf(sym), "up");
-			}
-			else{
-			    upOrDown.add(loopier.indexOf(sym), "neither");
-			}
-		    }
-		}
-	    }
-		sMap.replace(sym.toUpperCase().replace("\n", ""), elements.replace("\n", ""));
 
-		sMap2.put(sym.toUpperCase().replace("\n", "") +": " , Double.parseDouble(element2));
-
-//		if(Double.parseDouble(element2) == Double.parseDouble(holder)){
+//	    sMap.replace(sym.toUpperCase().replace("\n", ""), elements.replace("\n", ""));
 //
-//		}
-		String finalPrice = sym.toUpperCase().replace("\n", "") + element2;
-		System.out.print(sMap.keySet() + elements +"\n"+loopier.toString()+upOrDown.toString());
-		return finalPrice;
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	    return null;
-	}
-	@FXML //This method runs automatically once the app launches
-	//starts the loop to start the list refreshes
-	//Also creates a thread that runs the code to update the stock
-	//prices every 5 seconds
-	public void initialize() throws InterruptedException{
-	    upOrDown.add("neither");
-	    upOrDown.add("neither");
-	    upOrDown.add("neither");
-	    addSymbol.setDisable(true);
-	    lists.setItems(items);
-	    Thread thread = new Thread(new Runnable() {
-		public void run(){
-		    refresher();
-		}
-	    });
-	    thread.start();
-	    //StockLoop loopy = new StockLoop(looper, loopier, lists, items);
+//	    sMap2.put(sym.toUpperCase().replace("\n", "") +": " , Double.parseDouble(element2));
 
-	}
-	//This should allow for stock prices to be updated in the ListView
-	//every 5 seconds.
-	public void refresher(){	    			
+	    //		if(Double.parseDouble(element2) == Double.parseDouble(holder)){
+	    //
+	    //		}
+	    downOrUp(sym, Double.parseDouble(element2));
+	    String finalPrice = sym.toUpperCase().replace("\n", "") + element2;
+	    System.out.print(sMap.keySet() + elements +"\n"+loopier.toString()+upOrDown.toString());
+//	    holder3 = holder2;
 	    
-	    while(true){
-//		for(int i = 0; i < items.size(); i++){
-//		    if(upOrDown.get(i).equals("neither")){
-//			scene.getStyleSheets();
-//			    };
-//		    }
-//		}
-		Platform.runLater(() ->{
-		    this.items.clear();
-		});
-		for(String s: this.loopier){
-		    //if(this.loopier.contains(s)){
-		    //continue;
-		    //}
-		  
-			this.items.add(getPrice(s));
-			
-		    }
-		    this.lists.setItems(items);
-		    lists.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-		            @Override
-		            public ListCell<String> call(ListView<String> lists) {
-		                return new ListCell<String>(){
-		                    @Override
-		                    protected void updateItem(String itemss, boolean b) {
-		                        super.updateItem(itemss, b);    //To change body of overridden methods use File | Settings | File Templates.
-		                        
-		                        if (items.contains(itemss)) {
-//		                            
-		                             if(upOrDown.get(items.indexOf(itemss)).equals("up")){
-		                        	Platform.runLater(() ->{
-		                        	setTextFill(Color.GREEN);
-			                          setText(itemss);
-		                        	});
-		                            }
-		                            else if(upOrDown.get(items.indexOf(itemss)).equals("down")){
-		                        	Platform.runLater(() ->{
-		                        	setTextFill(Color.RED);
-			                          setText(itemss);
-		                        	});
-		                            }
-//		                            else if(upOrDown.get(items.indexOf(itemss)).equals("neither")){	                        	
-//			                        	Platform.runLater(() ->{
-//			                        setTextFill(Color.GREY);
-//			                          setText(itemss);
-//			                        	});
-//			                            }
-		                            setGraphic(null);
-		                        }
-//		                        
-		                    }
-		                };
-		            }
-		            
-		        });
-		
-		
-		
-		    
-		
-		try {
-		    Thread.sleep(5000);
-		} catch (InterruptedException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-
-
-	    }
+	    return finalPrice;
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
-	@FXML //button to add stock symbol in the textbox to the list
-	public void onButtonClick(){
-	    items.add(getPrice(textBox.getText()));
-	    textBox.clear();
-	    lists.setItems(items);
-
-	}
-	@FXML 
-	//Checks to make sure there is text to add to the list, button will be disabled otherwise.
-	//TODO add more safety checks so that user cannot screw themselves.
-	public void handleKeyReleased(){
-	    String text = textBox.getText();
-	    boolean disableButtons = text.isEmpty() || text.trim().isEmpty();
-	    addSymbol.setDisable(disableButtons);
-
-	}
-	@FXML //Allows stocks to be added when enter is pressed on the textbox.
-	public void onEnter(ActionEvent e){
-	    onButtonClick();
-	}
+	return null;
     }
 
- 
+    public void downOrUp(String sym, double price){
+	for(int i = 0; i<loopier.size()-1; i++){
+	    while(upOrDown.size() < loopier.size()){
+		upOrDown.add("neither");
+	    }
+	    
+	}
+	
+	if(!sMap.containsKey(sym)){
+		sMap.put(sym, price);
+		sMap2.put(sym, price);
+	}
+	else{
+	    sMap2.put(sym, price);
+	}
+	holder1 = sMap.get(sym);
+	holder2 = sMap2.get(sym);
+	if(holder1 > holder2){
+	    upOrDown.set(loopier.indexOf(sym), "down");
+	    sMap.put(sym, price);	    
+	}
+	else if(holder1 < holder2){
+	    upOrDown.set(loopier.indexOf(sym), "up");
+	    sMap.put(sym, price);
+	}
+	else if (loopier.indexOf(sym) == -1){
+	    upOrDown.set(loopier.indexOf(sym)+2, "neither");
+	    sMap.put(sym, price);
+	}
+	else{
+	    if(upOrDown.size()==0){
+		upOrDown.add("neither");
+	    }
+	    else{
+	    upOrDown.set(loopier.indexOf(sym), "neither");
+	    sMap.put(sym, price);
+	    }
+	}
+	    		
+    }
+    @FXML //This method runs automatically once the app launches
+    //starts the loop to start the list refreshes
+    //Also creates a thread that runs the code to update the stock
+    //prices every 5 seconds
+    public void initialize() throws InterruptedException{
+	addSymbol.setDisable(true);
+	lists.setItems(items);
+	Thread thread = new Thread(new Runnable() {
+	    public void run(){
+		refresher();
+	    }
+	});
+	thread.start();
+	//StockLoop loopy = new StockLoop(looper, loopier, lists, items);
+
+    }
+    //This should allow for stock prices to be updated in the ListView
+    //every 5 seconds.
+    public void refresher(){	    			
+
+	while(true){
+	    //		for(int i = 0; i < items.size(); i++){
+	    //		    if(upOrDown.get(i).equals("neither")){
+	    //			scene.getStyleSheets();
+	    //			    };
+	    //		    }
+	    //		}
+	    Platform.runLater(() ->{
+		this.items.clear();
+	    });
+	    for(String s: this.loopier){
+		//if(this.loopier.contains(s)){
+		//continue;
+		//}
+
+		this.items.add(getPrice(s));
+
+	    }
+	    this.lists.setItems(items);
+	    lists.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+		@Override
+		public ListCell<String> call(ListView<String> lists) {
+		    return new ListCell<String>(){
+			@Override
+			protected void updateItem(String itemss, boolean b) {
+			    super.updateItem(itemss, b);    //To change body of overridden methods use File | Settings | File Templates.
+
+			    if (items.contains(itemss)) {
+				//		                            
+				if(upOrDown.get(items.indexOf(itemss)).equals("up")){
+				    Platform.runLater(() ->{
+					setTextFill(Color.GREEN);
+					setText(itemss);
+				    });
+				}
+				else if(upOrDown.get(items.indexOf(itemss)).equals("down")){
+				    Platform.runLater(() ->{
+					setTextFill(Color.RED);
+					setText(itemss);
+				    });
+				}
+				else{
+				    Platform.runLater(() ->{
+					setTextFill(Color.BLUE);
+					setText(itemss);
+				    });
+				}
+				//		                            else if(upOrDown.get(items.indexOf(itemss)).equals("neither")){	                        	
+				//			                        	Platform.runLater(() ->{
+				//			                        setTextFill(Color.GREY);
+				//			                          setText(itemss);
+				//			                        	});
+				//			                            }
+				
+			    }
+			    //		                        
+			}
+		    };
+		}
+
+	    });
+
+
+
+
+
+	    try {
+		Thread.sleep(5000);
+	    } catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+
+
+	}
+    }
+    @FXML //button to add stock symbol in the textbox to the list
+    public void onButtonClick(){
+	items.add(getPrice(textBox.getText()));
+	textBox.clear();
+	lists.setItems(items);
+
+    }
+    @FXML 
+    //Checks to make sure there is text to add to the list, button will be disabled otherwise.
+    //TODO add more safety checks so that user cannot screw themselves.
+    public void handleKeyReleased(){
+	String text = textBox.getText();
+	boolean disableButtons = text.isEmpty() || text.trim().isEmpty();
+	addSymbol.setDisable(disableButtons);
+
+    }
+    @FXML //Allows stocks to be added when enter is pressed on the textbox.
+    public void onEnter(ActionEvent e){
+	onButtonClick();
+    }
+}
+
+
